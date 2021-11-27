@@ -1,3 +1,4 @@
+import Circle from "components/Circle";
 import styled, { keyframes } from "styled-components";
 
 const animation = keyframes`
@@ -75,6 +76,7 @@ const App = function () {
         </Btn>
         <Input />
       </div>
+      <Circle bgColor="red" />
     </Wrapper>
   );
 };
