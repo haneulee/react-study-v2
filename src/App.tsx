@@ -46,15 +46,25 @@ const Box = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  margin: 0;
+  background-color: ${(props) => props.theme.backgroundColor};
 `;
 
 const Input = styled.input.attrs({ required: true })`
   background-color: red;
 `;
 
+const Title = styled.div`
+  color: ${(props) => props.theme.textColor};
+`;
+
 const App = function () {
   return (
     <Wrapper as="header">
+      <Title>Hello</Title>
       <Box>
         <Emoji as="p">😂</Emoji>
       </Box>

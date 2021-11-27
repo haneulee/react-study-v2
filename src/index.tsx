@@ -1,13 +1,24 @@
-import "./index.css";
-
 import React from "react";
 import ReactDOM from "react-dom";
+import { ThemeProvider } from "styled-components";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+const darkTheme = {
+  textColor: "whitesmoke",
+  backgroundColor: "#000",
+};
+
+const lightTheme = {
+  textColor: "#000",
+  backgroundColor: "whitesmoke",
+};
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={lightTheme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root"),
 );
