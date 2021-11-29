@@ -4,15 +4,7 @@ import { ThemeProvider } from "styled-components";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const darkTheme = {
-  textColor: "whitesmoke",
-  backgroundColor: "#000",
-};
-
-const lightTheme = {
-  textColor: "#000",
-  backgroundColor: "whitesmoke",
-};
+import { darkTheme, lightTheme } from "./theme";
 
 ReactDOM.render(
   <React.StrictMode>

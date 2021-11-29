@@ -52,7 +52,7 @@ const Wrapper = styled.div`
   height: 100vh;
   text-align: center;
   margin: 0;
-  background-color: ${(props) => props.theme.backgroundColor};
+  background-color: ${(props) => props.theme.bgColor};
 `;
 
 const Input = styled.input.attrs({ required: true })`
