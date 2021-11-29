@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Circle from "components/Circle";
 import styled, { keyframes } from "styled-components";
 
@@ -63,6 +64,18 @@ const Title = styled.div`
 `;
 
 const App = function () {
+  const [value, setValue] = useState("");
+  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value },
+    } = event;
+    setValue(value);
+  };
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(value);
+  };
+
   return (
     <Wrapper as="header">
       <Title>Hello</Title>
@@ -77,6 +90,15 @@ const App = function () {
         <Input />
       </div>
       <Circle bgColor="red" />
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          placeholder="username"
+          onChange={onChange}
+          value={value}
+        />
+        <button type="submit">Log in</button>
+      </form>
     </Wrapper>
   );
 };
