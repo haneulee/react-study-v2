@@ -7,11 +7,11 @@ const Router = function () {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/:coinId">
-          <Coin />
-        </Route>
         <Route path="/test">
           <Test />
+        </Route>
+        <Route path="/:coinId">
+          <Coin />
         </Route>
         <Route path="/">
           <Coins />
