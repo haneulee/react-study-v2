@@ -25,17 +25,24 @@ const Chart = function ({ coinId }: ChartProps) {
       refetchInterval: 10000,
     },
   );
+
+  console.log(data);
   return (
     <div>
       {isLoading ? (
         "Loading chart..."
       ) : (
         <ReactApexChart
-          type="line"
+          type="candlestick"
           series={[
             {
               name: "Price",
-              data: data?.map((price) => price.close),
+              data: data?.map((price) => {
+                return {
+                  x: new Date(price.time_open),
+                  y: [price.open, price.high, price.low, price.close],
+                };
+              }),
             },
           ]}
           options={{
@@ -56,7 +63,9 @@ const Chart = function ({ coinId }: ChartProps) {
               width: 4,
             },
             yaxis: {
-              show: false,
+              tooltip: {
+                enabled: true,
+              },
             },
             xaxis: {
               axisBorder: { show: false },
