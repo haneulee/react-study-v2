@@ -81,7 +81,7 @@ const App = function () {
     <Wrapper as="header">
       <GlobalStyle />
       <Router />
-      <ReactQueryDevtools initialIsOpen={true} />
+      <ReactQueryDevtools initialIsOpen />
     </Wrapper>
   );
 };
