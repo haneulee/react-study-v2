@@ -1,27 +1,35 @@
 import { fetchCoins } from "api";
+import ToggleButton from "components/ToggleButton";
 import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
-  padding: 0px 20px;
-  max-width: 480px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 30px;
 `;
 
 const Header = styled.header`
-  height: 15vh;
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
 
-const CoinsList = styled.ul``;
+const CoinsList = styled.ul`
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  grid-template-columns: auto auto auto auto auto;
+  grid-gap: 30px;
+  margin: 30px;
+`;
 
 const Coin = styled.li`
   background-color: white;
-  color: ${(props) => props.theme.bgColor};
   border-radius: 15px;
   margin-bottom: 10px;
   a {
@@ -39,7 +47,6 @@ const Coin = styled.li`
 
 const Title = styled.h1`
   font-size: 48px;
-  color: ${(props) => props.theme.accentColor};}
 `;
 
 const Loader = styled.span`
@@ -73,6 +80,7 @@ const Coins = function () {
       </Helmet>
       <Header>
         <Title>코인</Title>
+        <ToggleButton />
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>

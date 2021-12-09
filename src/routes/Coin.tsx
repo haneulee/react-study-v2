@@ -1,4 +1,5 @@
 import { fetchCoinInfo, fetchCoinTickers } from "api";
+import ToggleButton from "components/ToggleButton";
 import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import {
@@ -15,7 +16,6 @@ import Price from "./Price";
 
 const Title = styled.h1`
   font-size: 48px;
-  color: ${(props) => props.theme.accentColor};
 `;
 
 const Loader = styled.span`
@@ -24,16 +24,24 @@ const Loader = styled.span`
 `;
 
 const Container = styled.div`
-  padding: 0px 20px;
-  max-width: 480px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  margin: 30px;
 `;
 
 const Header = styled.header`
-  height: 15vh;
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+`;
+
+const Wrapper = styled.div`
+  max-width: 1000px;
+  margin: 30px auto;
 `;
 
 const Overview = styled.div`
@@ -178,11 +186,12 @@ const Coin = function () {
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
+        <ToggleButton />
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (
-        <>
+        <Wrapper>
           <Overview>
             <OverviewItem>
               <span>Rank:</span>
@@ -226,7 +235,7 @@ const Coin = function () {
               <Chart coinId={coinId} />
             </Route>
           </Switch>
-        </>
+        </Wrapper>
       )}
     </Container>
   );
