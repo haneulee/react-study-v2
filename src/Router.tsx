@@ -5,7 +5,7 @@ import Coins from "routes/Coins";
 
 const Router = function () {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/react-study-v2">
       <Switch>
         <Route path="/test">
           <Test />
