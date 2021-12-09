@@ -149,8 +149,8 @@ interface PriceData {
 const Coin = function () {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
-  const priceMatch = useRouteMatch("/:coinId/price");
-  const chartMatch = useRouteMatch("/:coinId/chart");
+  const priceMatch = useRouteMatch("/coin/:coinId/price");
+  const chartMatch = useRouteMatch("/coin/:coinId/chart");
   // Object.keys(info).join()
   // Object.values(info).map(v => typeof v).join() 타입스크립트 타입 추출
 
@@ -211,18 +211,18 @@ const Coin = function () {
 
           <Tabs>
             <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
+              <Link to={`/coin/${coinId}/chart`}>Chart</Link>
             </Tab>
             <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
+              <Link to={`/coin/${coinId}/price`}>Price</Link>
             </Tab>
           </Tabs>
 
           <Switch>
-            <Route path="/:coinId/price">
+            <Route path="/coin/:coinId/price">
               <Price />
             </Route>
-            <Route path="/:coinId/chart">
+            <Route path="/coin/:coinId/chart">
               <Chart coinId={coinId} />
             </Route>
           </Switch>

@@ -10,7 +10,7 @@ const Router = function () {
         <Route path="/test">
           <Test />
         </Route>
-        <Route path="/:coinId">
+        <Route path="/coin/:coinId">
           <Coin />
         </Route>
         <Route path="/">
