@@ -15,9 +15,7 @@ const Container = styled.div`
 const Header = styled.header`
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
 `;
 
 const CoinsList = styled.ul`
@@ -32,6 +30,7 @@ const Coin = styled.li`
   background-color: white;
   border-radius: 15px;
   margin-bottom: 10px;
+  font-size: 1.2rem;
   a {
     display: flex;
     align-items: center;
@@ -52,6 +51,7 @@ const Title = styled.h1`
 const Loader = styled.span`
   text-align: center;
   display: block;
+  font-size: 48px;
 `;
 
 const Img = styled.img`
@@ -76,10 +76,10 @@ const Coins = function () {
   return (
     <Container>
       <Helmet>
-        <title>코인</title>
+        <title>Coin Pan 💸</title>
       </Helmet>
       <Header>
-        <Title>코인</Title>
+        <Title>Coin Pan 💸</Title>
         <ToggleButton />
       </Header>
       {isLoading ? (

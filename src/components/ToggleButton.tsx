@@ -8,6 +8,7 @@ const ToggleButton = function () {
     <Button
       rightIcon={colorMode === "light" ? <FaRegMoon /> : <FaRegSun />}
       onClick={toggleColorMode}
+      style={{ position: "absolute", right: "0", top: "0" }}
     >
       {colorMode === "light" ? "Dark" : "Light"} Mode
     </Button>

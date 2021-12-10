@@ -1,4 +1,5 @@
 import { fetchCoinInfo, fetchCoinTickers } from "api";
+import BackButton from "components/BackButton";
 import ToggleButton from "components/ToggleButton";
 import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
@@ -21,6 +22,7 @@ const Title = styled.h1`
 const Loader = styled.span`
   text-align: center;
   display: block;
+  font-size: 48px;
 `;
 
 const Container = styled.div`
@@ -34,9 +36,7 @@ const Container = styled.div`
 const Header = styled.header`
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
 `;
 
 const Wrapper = styled.div`
@@ -47,7 +47,7 @@ const Wrapper = styled.div`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -81,7 +81,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
@@ -90,69 +90,6 @@ const Tab = styled.span<{ isActive: boolean }>`
     display: block;
   }
 `;
-
-interface RouteParams {
-  coinId: string;
-}
-
-interface RouteState {
-  name: string;
-}
-
-interface InfoData {
-  id: string;
-  name: string;
-  symbol: string;
-  rank: number;
-  is_new: boolean;
-  is_active: boolean;
-  type: string;
-  description: string;
-  message: string;
-  open_source: boolean;
-  started_at: string;
-  development_status: string;
-  hardware_wallet: boolean;
-  proof_type: string;
-  org_structure: string;
-  hash_algorithm: string;
-  first_data_at: string;
-  last_data_at: string;
-}
-
-interface PriceData {
-  id: string;
-  name: string;
-  symbol: string;
-  rank: number;
-  circulating_supply: number;
-  total_supply: number;
-  max_supply: number;
-  beta_value: number;
-  first_data_at: string;
-  last_updated: string;
-  quotes: {
-    USD: {
-      ath_date: string;
-      ath_price: number;
-      market_cap: number;
-      market_cap_change_24h: number;
-      percent_change_1h: number;
-      percent_change_1y: number;
-      percent_change_6h: number;
-      percent_change_7d: number;
-      percent_change_12h: number;
-      percent_change_15m: number;
-      percent_change_24h: number;
-      percent_change_30d: number;
-      percent_change_30m: number;
-      percent_from_price_ath: number;
-      price: number;
-      volume_24h: number;
-      volume_24h_change_24h: number;
-    };
-  };
-}
 
 const Coin = function () {
   const { coinId } = useParams<RouteParams>();
@@ -183,6 +120,7 @@ const Coin = function () {
         </title>
       </Helmet>
       <Header>
+        <BackButton />
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>

@@ -25,7 +25,13 @@ const theme = extendTheme({
         lineHeight: "tall",
       },
       a: {
-        color: props.colorMode === "dark" ? "teal.300" : "teal.500",
+        color: "gray.800",
+        whiteSpace: "pre",
+        borderRadius: "inherit",
+        _hover: {
+          color: "teal.500",
+          boxShadow: "0px 0px 30px 10px rgb(49, 151, 149, 0.7)",
+        },
         _focus: {
           textDecoration: "none",
           outline: "none",

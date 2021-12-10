@@ -1,3 +1,4 @@
+import { useColorMode } from "@chakra-ui/color-mode";
 import ReactApexChart from "react-apexcharts";
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
@@ -18,6 +19,7 @@ interface IHistorical {
 }
 
 const Chart = function ({ coinId }: ChartProps) {
+  const { colorMode } = useColorMode();
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId),
@@ -58,16 +60,33 @@ const Chart = function ({ coinId }: ChartProps) {
               width: 500,
               background: "transparent",
             },
-            grid: { show: false },
+            grid: {
+              show: false,
+            },
             yaxis: {
               tooltip: {
                 enabled: true,
               },
+              labels: {
+                style: {
+                  colors: colorMode === "dark" ? "#fff" : "#000",
+                },
+              },
             },
             xaxis: {
               type: "datetime",
+              labels: {
+                datetimeFormatter: {
+                  year: "yyyy",
+                  month: "MMM 'yy",
+                  day: "dd MMM",
+                  hour: "HH:mm",
+                },
+                style: {
+                  colors: colorMode === "dark" ? "#fff" : "#000",
+                },
+              },
             },
-            colors: ["#0fbcf9"],
             dataLabels: {
               formatter: (value: number) => `$${value.toFixed(2)}`,
             },
