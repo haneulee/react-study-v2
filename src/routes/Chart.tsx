@@ -38,9 +38,13 @@ const Chart = function ({ coinId }: ChartProps) {
             {
               name: "Price",
               data: data?.map((price) => {
+                const open = price.open.toFixed(2);
+                const high = price.high.toFixed(2);
+                const low = price.low.toFixed(2);
+                const close = price.close.toFixed(2);
                 return {
                   x: new Date(price.time_open),
-                  y: [price.open, price.high, price.low, price.close],
+                  y: [open, high, low, close],
                 };
               }),
             },
@@ -52,37 +56,20 @@ const Chart = function ({ coinId }: ChartProps) {
             chart: {
               height: 300,
               width: 500,
-              toolbar: {
-                show: false,
-              },
               background: "transparent",
             },
             grid: { show: false },
-            stroke: {
-              curve: "smooth",
-              width: 4,
-            },
             yaxis: {
               tooltip: {
                 enabled: true,
               },
             },
             xaxis: {
-              axisBorder: { show: false },
-              axisTicks: { show: false },
-              labels: { show: false },
               type: "datetime",
-              categories: data?.map((price) => price.time_close),
-            },
-            fill: {
-              type: "gradient",
-              gradient: { gradientToColors: ["#0be881"], stops: [0, 100] },
             },
             colors: ["#0fbcf9"],
-            tooltip: {
-              y: {
-                formatter: (value) => `$${value.toFixed(2)}`,
-              },
+            dataLabels: {
+              formatter: (value: number) => `$${value.toFixed(2)}`,
             },
           }}
         />
