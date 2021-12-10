@@ -28,14 +28,14 @@ const Loader = styled.span`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   margin: 30px;
 `;
 
 const Header = styled.header`
   width: 100%;
-  height: 100%;
+  height: 100px;
   position: relative;
 `;
 
