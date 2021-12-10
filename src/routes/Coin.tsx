@@ -110,6 +110,7 @@ const Coin = function () {
       refetchInterval: 5000,
     },
   );
+
   const loading = infoLoading || tickersLoading;
 
   return (

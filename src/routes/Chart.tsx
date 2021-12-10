@@ -28,7 +28,6 @@ const Chart = function ({ coinId }: ChartProps) {
     },
   );
 
-  console.log(data);
   return (
     <div>
       {isLoading ? (

@@ -36,11 +36,7 @@ const Coin = styled.li`
     align-items: center;
     padding: 20px;
     transition: color 0.2s ease-in;
-  }
-  &:hover {
-    a {
-      color: ${(props) => props.theme.accentColor};
-    }
+    color: #333;
   }
 `;
 
