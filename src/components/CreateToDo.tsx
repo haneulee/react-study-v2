@@ -8,6 +8,7 @@ import { categoryState, toDoState } from "../atoms";
 const FormContainer = styled.form`
   display: flex;
   flex-direction: row;
+  margin-top: 10px;
   & button {
     margin-left: 10px;
   }

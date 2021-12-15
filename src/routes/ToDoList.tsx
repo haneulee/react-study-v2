@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet";
 import BackButton from "components/BackButton";
 import ToggleButton from "components/ToggleButton";
+import { Select } from "@chakra-ui/select";
 
 const Container = styled.div`
   display: flex;
@@ -54,13 +55,17 @@ const ToDoList = function () {
         <ToggleButton />
       </Header>
       <Wrapper>
+        <Select
+          placeholder="Select category"
+          value={category}
+          onInput={onInput}
+        >
+          <option value={Categories.TO_DO}>To Do</option>
+          <option value={Categories.DOING}>Doing</option>
+          <option value={Categories.DONE}>Done</option>
+        </Select>
         <CreateToDo />
         <ToDoContainer>
-          <select value={category} onInput={onInput}>
-            <option value={Categories.TO_DO}>To Do</option>
-            <option value={Categories.DOING}>Doing</option>
-            <option value={Categories.DONE}>Done</option>
-          </select>
           {toDos?.map((toDo) => (
             <ToDo key={toDo.id} {...toDo} />
           ))}

@@ -1,5 +1,17 @@
+import { Button } from "@chakra-ui/button";
 import { useSetRecoilState } from "recoil";
+import styled from "styled-components";
 import { Categories, IToDo, toDoState } from "../atoms";
+
+const ToDoWrapper = styled.li`
+  background: rgba(0, 0, 0, 0.2);
+  padding: 20px 40px;
+  border-radius: 4px;
+`;
+
+const ToDoButton = styled(Button)`
+  margin-left: 10px;
+`;
 
 const ToDo = function ({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
@@ -24,24 +36,24 @@ const ToDo = function ({ text, category, id }: IToDo) {
   };
 
   return (
-    <li>
+    <ToDoWrapper>
       <span>{text}</span>
       {category !== Categories.DOING && (
-        <button name={Categories.DOING} onClick={onClick}>
+        <ToDoButton color="teal" name={Categories.DOING} onClick={onClick}>
           Doing
-        </button>
+        </ToDoButton>
       )}
       {category !== Categories.TO_DO && (
-        <button name={Categories.TO_DO} onClick={onClick}>
+        <ToDoButton color="teal" name={Categories.TO_DO} onClick={onClick}>
           To Do
-        </button>
+        </ToDoButton>
       )}
       {category !== Categories.DONE && (
-        <button name={Categories.DONE} onClick={onClick}>
+        <ToDoButton color="teal" name={Categories.DONE} onClick={onClick}>
           Done
-        </button>
+        </ToDoButton>
       )}
-    </li>
+    </ToDoWrapper>
   );
 };
 
