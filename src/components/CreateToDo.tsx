@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
+import { FormLabel } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -23,14 +24,18 @@ const CreateToDo = function () {
   const category = useRecoilValue(categoryState);
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const handleValid = ({ toDo }: IForm) => {
-    setToDos((oldToDos) => [
-      { text: toDo, id: Date.now(), category },
-      ...oldToDos,
-    ]);
+    setToDos((oldToDos) => {
+      const newToDos = [{ text: toDo, id: Date.now(), category }, ...oldToDos];
+
+      localStorage.setItem("ToDos", JSON.stringify(newToDos));
+
+      return newToDos;
+    });
     setValue("toDo", "");
   };
   return (
     <FormContainer onSubmit={handleSubmit(handleValid)}>
+      <FormLabel width="200px">Create To Do</FormLabel>
       <Input
         {...register("toDo", {
           required: "Please write a To Do",

@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/button";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { Categories, IToDo, toDoState } from "../atoms";
+import { Categories, categoriesState, IToDo, toDoState } from "../atoms";
 
 const ToDoWrapper = styled.li`
   background: rgba(0, 0, 0, 0.2);
@@ -15,6 +15,7 @@ const ToDoButton = styled(Button)`
 
 const ToDo = function ({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
+  const categories = useRecoilValue(categoriesState);
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const {
       currentTarget: { name },
@@ -38,21 +39,21 @@ const ToDo = function ({ text, category, id }: IToDo) {
   return (
     <ToDoWrapper>
       <span>{text}</span>
-      {category !== Categories.DOING && (
-        <ToDoButton color="teal" name={Categories.DOING} onClick={onClick}>
-          Doing
-        </ToDoButton>
-      )}
-      {category !== Categories.TO_DO && (
-        <ToDoButton color="teal" name={Categories.TO_DO} onClick={onClick}>
-          To Do
-        </ToDoButton>
-      )}
-      {category !== Categories.DONE && (
-        <ToDoButton color="teal" name={Categories.DONE} onClick={onClick}>
-          Done
-        </ToDoButton>
-      )}
+      {categories.map((c) => {
+        if (c !== category) {
+          return (
+            <ToDoButton
+              key={Math.random()}
+              color="teal"
+              name={c}
+              onClick={onClick}
+            >
+              {c}
+            </ToDoButton>
+          );
+        }
+        return null;
+      })}
     </ToDoWrapper>
   );
 };

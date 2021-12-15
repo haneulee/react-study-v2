@@ -1,12 +1,13 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import CreateToDo from "components/CreateToDo";
-import ToDo from "components/ToDo";
-import { Categories, categoryState, toDoSelector, toDoState } from "atoms";
+import { useRecoilValue } from "recoil";
+import { toDoSelector } from "atoms";
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
+
+import Categories from "components/Categories";
+import CreateToDo from "components/CreateToDo";
+import ToDo from "components/ToDo";
 import BackButton from "components/BackButton";
 import ToggleButton from "components/ToggleButton";
-import { Select } from "@chakra-ui/select";
 
 const Container = styled.div`
   display: flex;
@@ -40,10 +41,7 @@ const ToDoContainer = styled.ul`
 
 const ToDoList = function () {
   const toDos = useRecoilValue(toDoSelector);
-  const [category, setCategory] = useRecoilState(categoryState);
-  const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
-    setCategory(event.currentTarget.value as any);
-  };
+
   return (
     <Container>
       <Helmet>
@@ -55,15 +53,7 @@ const ToDoList = function () {
         <ToggleButton />
       </Header>
       <Wrapper>
-        <Select
-          placeholder="Select category"
-          value={category}
-          onInput={onInput}
-        >
-          <option value={Categories.TO_DO}>To Do</option>
-          <option value={Categories.DOING}>Doing</option>
-          <option value={Categories.DONE}>Done</option>
-        </Select>
+        <Categories />
         <CreateToDo />
         <ToDoContainer>
           {toDos?.map((toDo) => (
