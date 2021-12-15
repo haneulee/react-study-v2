@@ -6,12 +6,12 @@ import ToDoList from "routes/ToDoList";
 
 const Router = function () {
   return (
-    <HashRouter basename="/react-study-v2">
+    <HashRouter>
       <Switch>
         <Route exact path="/">
           <Coins />
         </Route>
-        <Route exact path="/todo/">
+        <Route exact path="/todo">
           <ToDoList />
         </Route>
         <Route path="/coin/:coinId">
