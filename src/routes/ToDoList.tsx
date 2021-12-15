@@ -1,7 +1,7 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import CreateToDo from "components/CreateToDo";
 import ToDo from "components/ToDo";
-import { toDoState } from "atoms";
+import { categoryState, toDoSelector, toDoState } from "atoms";
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
 import BackButton from "components/BackButton";
@@ -34,11 +34,15 @@ const ToDoContainer = styled.ul`
   margin: 20px;
   & li {
     margin: 10px;
-  }
+  }s
 `;
 
 const ToDoList = function () {
-  const toDos = useRecoilValue(toDoState);
+  const toDos = useRecoilValue(toDoSelector);
+  const [category, setCategory] = useRecoilState(categoryState);
+  const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
+    setCategory(event.currentTarget.value);
+  };
   return (
     <Container>
       <Helmet>
@@ -52,7 +56,12 @@ const ToDoList = function () {
       <Wrapper>
         <CreateToDo />
         <ToDoContainer>
-          {toDos.map((toDo) => (
+          <select value={category} onInput={onInput}>
+            <option value="TO_DO">To Do</option>
+            <option value="DOING">Doing</option>
+            <option value="DONE">Done</option>
+          </select>
+          {toDos?.map((toDo) => (
             <ToDo key={toDo.id} {...toDo} />
           ))}
         </ToDoContainer>
