@@ -1,6 +1,17 @@
+import { Button } from "@chakra-ui/button";
+import { Input } from "@chakra-ui/input";
 import { useForm } from "react-hook-form";
+import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
 import { toDoState } from "../atoms";
+
+const FormContainer = styled.form`
+  display: flex;
+  flex-direction: row;
+  & button {
+    margin-left: 10px;
+  }
+`;
 
 interface IForm {
   toDo: string;
@@ -17,15 +28,17 @@ const CreateToDo = function () {
     setValue("toDo", "");
   };
   return (
-    <form onSubmit={handleSubmit(handleValid)}>
-      <input
+    <FormContainer onSubmit={handleSubmit(handleValid)}>
+      <Input
         {...register("toDo", {
           required: "Please write a To Do",
         })}
         placeholder="Write a to do"
       />
-      <button>Add</button>
-    </form>
+      <Button type="submit" colorScheme="teal">
+        Add
+      </Button>
+    </FormContainer>
   );
 };
 
