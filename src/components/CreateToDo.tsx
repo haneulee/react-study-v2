@@ -2,8 +2,8 @@ import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useSetRecoilState } from "recoil";
-import { toDoState } from "../atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { categoryState, toDoState } from "../atoms";
 
 const FormContainer = styled.form`
   display: flex;
@@ -19,10 +19,11 @@ interface IForm {
 
 const CreateToDo = function () {
   const setToDos = useSetRecoilState(toDoState);
+  const category = useRecoilValue(categoryState);
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const handleValid = ({ toDo }: IForm) => {
     setToDos((oldToDos) => [
-      { text: toDo, id: Date.now(), category: "TO_DO" },
+      { text: toDo, id: Date.now(), category },
       ...oldToDos,
     ]);
     setValue("toDo", "");
