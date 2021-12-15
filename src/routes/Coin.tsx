@@ -40,7 +40,7 @@ const Header = styled.header`
 `;
 
 const Wrapper = styled.div`
-  max-width: 1000px;
+  min-width: 1000px;
   margin: 30px auto;
 `;
 
