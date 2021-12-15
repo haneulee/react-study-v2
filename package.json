@@ -2,7 +2,7 @@
   "name": "react-study-v2",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://blog.haneul-lee.com/react-study-v2",
+  "homepage": "https://blog.haneul-lee.com/react-study-v2/",
   "dependencies": {
     "@chakra-ui/react": "^1.7.2",
     "@emotion/react": "^11",
