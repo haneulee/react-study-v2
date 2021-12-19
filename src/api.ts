@@ -104,3 +104,15 @@ export function getTvDetail(tvId: string) {
     response.json(),
   );
 }
+
+export function searchMovies(movieId: string) {
+  return fetch(
+    `${BASE_PATH}/search/movie/?api_key=${API_KEY}&query=${movieId}`,
+  ).then((response) => response.json());
+}
+
+export function searchTvs(tvId: string) {
+  return fetch(`${BASE_PATH}/search/tv/?api_key=${API_KEY}&query=${tvId}`).then(
+    (response) => response.json(),
+  );
+}

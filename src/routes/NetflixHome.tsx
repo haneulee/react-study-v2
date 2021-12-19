@@ -7,6 +7,7 @@ import Tv from "./Tv";
 
 const NetflixWrapper = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
   a {
     &:hover {
@@ -26,7 +27,7 @@ const NetflixHome = function () {
         <Route exact path={["/netflix/tv", "/netflix/tv/:tvId"]}>
           <Tv />
         </Route>
-        <Route exact path="/netflix/search">
+        <Route exact path={["/netflix/search", "/netflix/search/:id"]}>
           <Search />
         </Route>
       </Switch>

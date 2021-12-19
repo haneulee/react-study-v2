@@ -143,6 +143,7 @@ const Header = function () {
   const history = useHistory();
   const { register, handleSubmit } = useForm<IForm>();
   const onValid = (data: IForm) => {
+    localStorage.setItem("search", data.keyword);
     history.push(`/netflix/search?keyword=${data.keyword}`);
   };
 
