@@ -20,7 +20,7 @@ const NetflixHome = function () {
     <NetflixWrapper>
       <Header />
       <Switch>
-        <Route exact path="/netflix">
+        <Route exact path={["/netflix", "/netflix/movie/:movieId"]}>
           <Home />
         </Route>
         <Route exact path="/netflix/tv">

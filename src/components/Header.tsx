@@ -169,6 +169,7 @@ const Header = function () {
             animate={{ x: searchOpen ? -185 : 0 }}
             transition={{ type: "linear" }}
             fill="currentColor"
+            style={{ cursor: "pointer" }}
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
