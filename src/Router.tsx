@@ -3,6 +3,7 @@ import Test from "routes/Test";
 import Coin from "routes/Coin";
 import Coins from "routes/Coins";
 import ToDoList from "routes/ToDoList";
+import NetflixHome from "routes/NetflixHome";
 
 const Router = function () {
   return (
@@ -10,6 +11,9 @@ const Router = function () {
       <Switch>
         <Route exact path="/">
           <Coins />
+        </Route>
+        <Route path="/netflix">
+          <NetflixHome />
         </Route>
         <Route exact path="/todo">
           <ToDoList />
