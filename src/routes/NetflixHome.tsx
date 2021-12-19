@@ -23,7 +23,7 @@ const NetflixHome = function () {
         <Route exact path={["/netflix", "/netflix/movie/:movieId"]}>
           <Home />
         </Route>
-        <Route exact path="/netflix/tv">
+        <Route exact path={["/netflix/tv", "/netflix/tv/:tvId"]}>
           <Tv />
         </Route>
         <Route exact path="/netflix/search">

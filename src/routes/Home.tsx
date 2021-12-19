@@ -1,4 +1,13 @@
-import { getMovies, IGetMoviesResult } from "api";
+import { Button } from "@chakra-ui/button";
+import { Text } from "@chakra-ui/layout";
+import {
+  getLatestMovies,
+  getMovieDetail,
+  getTopRatedMovies,
+  getUpcomingMovies,
+  IGetMoviesResult,
+  IMovie,
+} from "api";
 import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { useState } from "react";
 import { useQuery } from "react-query";
@@ -41,7 +50,6 @@ const Overview = styled.p`
 
 const Slider = styled.div`
   position: relative;
-  top: -100px;
 `;
 
 const Row = styled(motion.div)`
@@ -98,7 +106,7 @@ const BigMovie = styled(motion.div)`
   right: 0;
   margin: 0 auto;
   border-radius: 15px;
-  overflow: hidden;
+  overflow-y: scroll;
   background-color: black;
 `;
 
@@ -122,6 +130,18 @@ const BigOverview = styled.p`
   position: relative;
   top: -80px;
   color: white;
+`;
+
+const SlideWrapper = styled.div`
+  height: 300px;
+  margin: 30px 0;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const rowVariants = {
@@ -170,32 +190,75 @@ const Home = function () {
     "/netflix/movie/:movieId",
   );
   const { scrollY } = useViewportScroll();
-  console.log(bigMovieMatch);
 
-  const { data, isLoading } = useQuery<IGetMoviesResult>(
-    ["movies", "nowPlaying"],
-    getMovies,
+  const { data: latest, isLoading: latestLoading } = useQuery<IGetMoviesResult>(
+    ["movies", "latest"],
+    getLatestMovies,
   );
-  const [index, setIndex] = useState(0);
+
+  const { data: topRated, isLoading: topRatedLoading } =
+    useQuery<IGetMoviesResult>(["movies", "topRated"], getTopRatedMovies);
+
+  const { data: upcoming, isLoading: upcomingLoading } =
+    useQuery<IGetMoviesResult>(["movies", "upcoming"], getUpcomingMovies);
+
+  const [index, setIndex] = useState<{
+    [prop: string]: any;
+    latest: number;
+    topRated: number;
+    upcoming: number;
+  }>({
+    latest: 0,
+    topRated: 0,
+    upcoming: 0,
+  });
   const [leaving, setLeaving] = useState(false);
-  const incraseIndex = () => {
-    if (data) {
-      if (leaving) return;
-      toggleLeaving();
-      const totalMovies = data.results.length - 1;
-      const maxIndex = Math.floor(totalMovies / offset) - 1;
-      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
-    }
-  };
   const toggleLeaving = () => setLeaving((prev) => !prev);
   const onBoxClicked = (movieId: number) => {
     history.push(`/netflix/movie/${movieId}`);
   };
   const onOverlayClick = () => history.push("/netflix");
+  const data: any = [
+    ...(latest?.results || []),
+    ...(topRated?.results || []),
+    ...(upcoming?.results || []),
+  ];
 
   const clickedMovie =
     bigMovieMatch?.params.movieId &&
-    data?.results.find((movie) => movie.id === +bigMovieMatch.params.movieId);
+    data?.find(
+      (movie: { id: number }) => movie.id === +bigMovieMatch.params.movieId,
+    );
+
+  const { data: movieDetail, isLoading: detailLoading } = useQuery<IMovie>(
+    ["movies", "detail"],
+    () => getMovieDetail(bigMovieMatch?.params.movieId || ""),
+  );
+
+  const increaseIndex = (type: string) => {
+    if (leaving) return;
+    const target = (type === "latest"
+      ? latest
+      : type === "topRated"
+      ? topRated
+      : upcoming) || { results: [] };
+
+    toggleLeaving();
+    const totalMovies = target.results.length - 1;
+    const maxIndex = Math.floor(totalMovies / offset) - 1;
+
+    setIndex((prev) => {
+      const prevIndex = prev[type];
+
+      return {
+        ...prev,
+        [type]: prevIndex === maxIndex ? 0 : prevIndex + 1,
+      };
+    });
+  };
+
+  const isLoading =
+    latestLoading || topRatedLoading || upcomingLoading || detailLoading;
 
   return (
     <Wrapper>
@@ -204,44 +267,158 @@ const Home = function () {
       ) : (
         <>
           <Banner
-            onClick={incraseIndex}
-            bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}
+            bgPhoto={makeImagePath(latest?.results[0].backdrop_path || "")}
           >
-            <Title>{data?.results[0].title}</Title>
-            <Overview>{data?.results[0].overview}</Overview>
+            <Title>{latest?.results[0].title}</Title>
+            <Overview>{latest?.results[0].overview}</Overview>
           </Banner>
-          <Slider>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-              <Row
-                variants={rowVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{ type: "tween", duration: 1 }}
-                key={index}
-              >
-                {data?.results
-                  .slice(1)
-                  .slice(offset * index, offset * index + offset)
-                  .map((movie) => (
-                    <Box
-                      layoutId={String(movie.id)}
-                      onClick={() => onBoxClicked(movie.id)}
-                      key={movie.id}
-                      whileHover="hover"
-                      initial="normal"
-                      variants={boxVariants}
-                      transition={{ type: "tween" }}
-                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
-                    >
-                      <Info variants={infoVariants}>
-                        <h4>{movie.title}</h4>
-                      </Info>
-                    </Box>
-                  ))}
-              </Row>
-            </AnimatePresence>
-          </Slider>
+          {latest && (
+            <SlideWrapper>
+              <TitleWrapper>
+                <Text fontSize="5xl">Latest Movies 🎬</Text>
+                <Button
+                  colorScheme="teal"
+                  size="lg"
+                  onClick={() => increaseIndex("latest")}
+                >
+                  Next
+                </Button>
+              </TitleWrapper>
+              <Slider>
+                <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                  <Row
+                    variants={rowVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ type: "tween", duration: 1 }}
+                    key={index.latest}
+                  >
+                    {latest?.results
+                      .slice(1)
+                      .slice(
+                        offset * index.latest,
+                        offset * index.latest + offset,
+                      )
+                      .map((movie) => (
+                        <Box
+                          layoutId={`${movie.id}latest`}
+                          onClick={() => onBoxClicked(movie.id)}
+                          key={movie.id}
+                          whileHover="hover"
+                          initial="normal"
+                          variants={boxVariants}
+                          transition={{ type: "tween" }}
+                          bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                        >
+                          <Info variants={infoVariants}>
+                            <h4>{movie.title}</h4>
+                          </Info>
+                        </Box>
+                      ))}
+                  </Row>
+                </AnimatePresence>
+              </Slider>
+            </SlideWrapper>
+          )}
+          {topRated && (
+            <SlideWrapper>
+              <TitleWrapper>
+                <Text fontSize="5xl">Top Rated Movies 🎬</Text>
+                <Button
+                  colorScheme="teal"
+                  size="lg"
+                  onClick={() => increaseIndex("topRated")}
+                >
+                  Next
+                </Button>
+              </TitleWrapper>
+              <Slider>
+                <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                  <Row
+                    variants={rowVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ type: "tween", duration: 1 }}
+                    key={index.topRated}
+                  >
+                    {topRated?.results
+                      .slice(1)
+                      .slice(
+                        offset * index.topRated,
+                        offset * index.topRated + offset,
+                      )
+                      .map((movie) => (
+                        <Box
+                          layoutId={`${movie.id}topRated`}
+                          onClick={() => onBoxClicked(movie.id)}
+                          key={movie.id}
+                          whileHover="hover"
+                          initial="normal"
+                          variants={boxVariants}
+                          transition={{ type: "tween" }}
+                          bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                        >
+                          <Info variants={infoVariants}>
+                            <h4>{movie.title}</h4>
+                          </Info>
+                        </Box>
+                      ))}
+                  </Row>
+                </AnimatePresence>
+              </Slider>
+            </SlideWrapper>
+          )}
+          {upcoming && (
+            <SlideWrapper>
+              <TitleWrapper>
+                <Text fontSize="5xl">Upcoming Movies 🎬</Text>
+                <Button
+                  colorScheme="teal"
+                  size="lg"
+                  onClick={() => increaseIndex("upcoming")}
+                >
+                  Next
+                </Button>
+              </TitleWrapper>
+              <Slider>
+                <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                  <Row
+                    variants={rowVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ type: "tween", duration: 1 }}
+                    key={index.upcoming}
+                  >
+                    {upcoming?.results
+                      .slice(1)
+                      .slice(
+                        offset * index.upcoming,
+                        offset * index.upcoming + offset,
+                      )
+                      .map((movie) => (
+                        <Box
+                          layoutId={`${movie.id}upcoming`}
+                          onClick={() => onBoxClicked(movie.id)}
+                          key={movie.id}
+                          whileHover="hover"
+                          initial="normal"
+                          variants={boxVariants}
+                          transition={{ type: "tween" }}
+                          bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                        >
+                          <Info variants={infoVariants}>
+                            <h4>{movie.title}</h4>
+                          </Info>
+                        </Box>
+                      ))}
+                  </Row>
+                </AnimatePresence>
+              </Slider>
+            </SlideWrapper>
+          )}
           <AnimatePresence>
             {bigMovieMatch ? (
               <>
@@ -265,6 +442,22 @@ const Home = function () {
                         }}
                       />
                       <BigTitle>{clickedMovie.title}</BigTitle>
+                      <BigOverview>
+                        Runtime 🍿: {movieDetail?.runtime}
+                      </BigOverview>
+                      <BigOverview>
+                        Popularity 💯: {movieDetail?.popularity}
+                      </BigOverview>
+                      <BigOverview>
+                        Website 🌏:{" "}
+                        <a
+                          href={movieDetail?.homepage}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {movieDetail?.homepage}
+                        </a>
+                      </BigOverview>
                       <BigOverview>{clickedMovie.overview}</BigOverview>
                     </>
                   )}
