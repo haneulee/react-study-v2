@@ -68,6 +68,7 @@ const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-position: center center;
   height: 200px;
   font-size: 66px;
+  position: relative;
   cursor: pointer;
   &:first-child {
     transform-origin: center left;
@@ -101,7 +102,7 @@ const Overlay = styled(motion.div)`
 
 const BigMovie = styled(motion.div)`
   position: absolute;
-  width: 40vw;
+  width: 80vw;
   height: 80vh;
   left: 0;
   right: 0;
@@ -109,6 +110,7 @@ const BigMovie = styled(motion.div)`
   border-radius: 15px;
   overflow-y: scroll;
   background-color: black;
+  z-index: 2;
 `;
 
 const BigCover = styled.div`
@@ -164,6 +166,7 @@ const boxVariants = {
   hover: {
     scale: 1.3,
     y: -80,
+    zIndex: 1,
     transition: {
       delay: 0.5,
       duaration: 0.1,

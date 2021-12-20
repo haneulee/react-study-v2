@@ -9,7 +9,12 @@ const NetflixWrapper = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
+  color: white;
+  text-align: left;
   a {
+    color: red;
+    font-size: 14pt;
+    font-weight: bold;
     &:hover {
       box-shadow: none;
     }
